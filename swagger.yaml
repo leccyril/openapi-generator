@@ -1,0 +1,132 @@
+openapi: '3.1.0'
+info:
+  version: 1.0.0
+  title: open api generator
+  termsOfService: http://swagger.io/terms/
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  contact:
+    name: Support
+    email: noreply@test.com
+servers:
+  - url: http://localhost:8081
+    description: local
+paths:
+  /test:
+    post:
+      tags:
+        - test
+      summary: Create test
+      description: Create test
+      operationId: createTest
+      requestBody:
+        description: test object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestRequest'
+        required: true
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /test/{id}:
+    get:
+      tags:
+        - "test"
+      summary: "get object"
+      description: "Returns object"
+      operationId: "getObject"
+      parameters:
+        - name: id
+          in: path
+          description: Gateway token generated in the network tokenization process
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Token not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    TestResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        value:
+          type: string
+    TestRequest:
+      type: object
+      properties:
+        number:
+          type: string
+          description: The card number ex:1234 1234 1234 1243
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          description: Request status
+        type:
+          type: string
+          description: Error type
+        code:
+          type: string
+          description: Error code
+        errors:
+          type: array
+          items:
+            type: string
+            description: List of error messages
